@@ -60,4 +60,5 @@ LOOP
 10. Display the 2-digit temperature on the 7-segment display for 30 seconds
 
 
-https://api.weather.com/v3/wx/observations/current?apiKey=e1f10a1e78da46f5b10a1e78da96f525&geocode=54.615%2C-5.861&language=en-US&units=m&format=json
+http://api.weather.com/v3/wx/observations/current?apiKey=e1f10a1e78da46f5b10a1e78da96f525&geocode=54.615%2C-5.861&language=en-US&units=m&format=json
+http://api.weather.com/v3/wx/observations/current?apiKey=e1f10a1e78da46f5b10a1e78da96f525&geocode=43.653%2C-79.384&units=m&language=en-US&format=json
