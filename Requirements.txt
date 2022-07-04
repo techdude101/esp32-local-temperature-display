@@ -1,0 +1,63 @@
+// PHASE 1 (powered by USB)
+1. Startup
+2. POST (power on self test) - all segments are displayed for 1 second for each digit
+3. Connect to WiFi (credentials hardcoded in firmware)
+4. Retrieve current temperature (nearest weather station or data source hardcoded in firmware)
+5. Display the 2-digit temperature on the 7-segment display
+
+
+// PHASE 2 (powered by USB)
+1. Startup
+2. POST (power on self test) - all segments are displayed for 1 second for each digit
+3. Connect to WiFi (credentials hardcoded in firmware)
+	- Error connecting to WiFi -> not handled yet
+4. Retrieve current temperature (nearest weather station or data source stored in firmware)
+	- Error retrieving temperature -> not handled yet
+5. Display the 2-digit temperature on the 7-segment display for 30 seconds
+LOOP
+6. Enter low power mode (turn off WiFi etc...)
+7. Wakeup when motion is detected
+8. Connect to WiFi
+9. Retrieve current temperature
+10. Display the 2-digit temperature on the 7-segment display for 30 seconds
+
+// PHASE 3 (powered by USB)
+1. Startup
+2. POST (power on self test) - all segments are displayed for 1 second for each digit
+3. Connect to WiFi (credentials hardcoded in firmware)
+	- Error connecting to WiFi -> Display F1 short for WiFi on the display
+4. Retrieve current temperature (nearest weather station or data source stored in firmware)
+	- Error retrieving temperature -> Display °C to indicate an error retrieving or parsing temperature (segments a, b, f & g) for ° symbol
+5. Display the 2-digit temperature on the 7-segment display for 30 seconds
+LOOP
+6. Enter low power mode (turn off WiFi etc...)
+7. Wakeup when motion is detected
+8. Connect to WiFi
+9. Retrieve current temperature
+10. Display the 2-digit temperature on the 7-segment display for 30 seconds
+
+// PHASE 4 (powered by battery)
+// CONFIGURATION
+1. Startup
+2. POST (power on self test) - all segments are displayed for 1 second for each digit
+3. WiFi station for 1 minute to enable configuration
+4. Client connects within 1 minute, 1 minute timer stops until client disconnects OR configuration has been successful
+5. Reset & connect to WiFi with new configuration
+
+// NORMAL OPERATION
+1. Startup
+2. POST (power on self test) - all segments are displayed for 1 second for each digit
+3. Connect to WiFi (credentials stored in device memory e.g. EEPROM / FLASH)
+	- Error connecting to WiFi -> Display F1 short for WiFi on the display
+4. Retrieve current temperature (nearest weather station or data source stored in device memory e.g. EEPROM / FLASH)
+	- Error retrieving temperature -> Display °C to indicate an error retrieving or parsing temperature (segments a, b, f & g) for ° symbol
+5. Display the 2-digit temperature on the 7-segment display for 30 seconds
+LOOP
+6. Enter low power mode (turn off WiFi etc...)
+7. Wakeup when motion is detected
+8. Connect to WiFi
+9. Retrieve current temperature
+10. Display the 2-digit temperature on the 7-segment display for 30 seconds
+
+
+https://api.weather.com/v3/wx/observations/current?apiKey=e1f10a1e78da46f5b10a1e78da96f525&geocode=54.615%2C-5.861&language=en-US&units=m&format=json
