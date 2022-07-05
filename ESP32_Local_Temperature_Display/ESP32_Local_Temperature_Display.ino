@@ -53,26 +53,40 @@ DynamicJsonDocument doc(4096);
 /* End of global variables */
 
 
-String httpGETRequest(const char* url) {
+/*******************************************************************************
+* Function Name: http_get
+********************************************************************************
+*
+* Summary:
+*  This routine performs an http GET request and returns a String
+*
+* Parameters:
+*  const char* url: HTTP url
+*
+* Return:
+*  String: Empty string on error else payload / response body
+*
+*******************************************************************************/
+String http_get(const char* url) {
   WiFiClient client;
   HTTPClient http;
     
   // Your Domain name with URL path or IP address with path
   http.begin(client, url);
   
-  // Send HTTP POST request
-  int httpResponseCode = http.GET();
+  // Send HTTP GET request
+  int http_response_code = http.GET();
   
-  String payload = "{}"; 
+  String payload = ""; 
   
-  if (httpResponseCode > 0) {
+  if (http_response_code > 0) {
     Serial.print("HTTP Response code: ");
-    Serial.println(httpResponseCode);
+    Serial.println(http_response_code);
     payload = http.getString();
   }
   else {
     Serial.print("Error code: ");
-    Serial.println(httpResponseCode);
+    Serial.println(http_response_code);
   }
   // Free resources
   http.end();
@@ -82,7 +96,7 @@ String httpGETRequest(const char* url) {
 
 
 /*******************************************************************************
-* Function Name: TurnDigitOn
+* Function Name: turn_digit_on
 ********************************************************************************
 *
 * Summary:
@@ -95,7 +109,7 @@ String httpGETRequest(const char* url) {
 *  None
 *
 *******************************************************************************/
-void TurnDigitOn(int digit) {
+void turn_digit_on(int digit) {
   if (digit <= 0) return;
   if (digit > 2) return;
   switch (digit) {
@@ -109,7 +123,7 @@ void TurnDigitOn(int digit) {
 }
 
 /*******************************************************************************
-* Function Name: TurnDigitOff
+* Function Name: turn_digit_off
 ********************************************************************************
 *
 * Summary:
@@ -122,7 +136,7 @@ void TurnDigitOn(int digit) {
 *  None
 *
 *******************************************************************************/
-void TurnDigitOff(int digit) {
+void turn_digit_off(int digit) {
   if (digit <= 0) return;
   if (digit > 2) return;
   switch (digit) {
@@ -136,7 +150,7 @@ void TurnDigitOff(int digit) {
 }
 
 /*******************************************************************************
-* Function Name: SEVENSegmentDisplayDigit
+* Function Name: seven_segment_display_digit
 ********************************************************************************
 *
 * Summary:
@@ -149,7 +163,7 @@ void TurnDigitOff(int digit) {
 *  None
 *
 *******************************************************************************/
-void SEVENSegmentDisplayDigit(int digit) {
+void seven_segment_display_digit(int digit) {
   switch (digit) {
     case 0:
       digitalWrite(SEVEN_SEG_A, LED_ON);
@@ -244,9 +258,32 @@ void SEVENSegmentDisplayDigit(int digit) {
   }
 }
 
+/*******************************************************************************
+* Function Name: seven_segment_display_dash
+********************************************************************************
+*
+* Summary:
+*  This routine displays a dash '-' on a 7-segment display
+*
+* Parameters:
+*  None
+*
+* Return:
+*  None
+*
+*******************************************************************************/
+void seven_segment_display_dash() {
+    digitalWrite(SEVEN_SEG_A, LED_OFF);
+    digitalWrite(SEVEN_SEG_B, LED_OFF);
+    digitalWrite(SEVEN_SEG_C, LED_OFF);
+    digitalWrite(SEVEN_SEG_D, LED_OFF);
+    digitalWrite(SEVEN_SEG_E, LED_OFF);
+    digitalWrite(SEVEN_SEG_F, LED_OFF);
+    digitalWrite(SEVEN_SEG_G, LED_ON);
+}
 
 /*******************************************************************************
-* Function Name: SEVENSegmentDisplayOff
+* Function Name: seven_segment_turn_display_off
 ********************************************************************************
 *
 * Summary:
@@ -259,8 +296,7 @@ void SEVENSegmentDisplayDigit(int digit) {
 *  None
 *
 *******************************************************************************/
-void SEVENSegmentDisplayOff() {
-//  SEVENSegmentSetAllPinsAsInput();
+void seven_segment_turn_display_off() {
   digitalWrite(SEVEN_SEG_A, LED_OFF);
   digitalWrite(SEVEN_SEG_B, LED_OFF);
   digitalWrite(SEVEN_SEG_C, LED_OFF);
@@ -271,7 +307,7 @@ void SEVENSegmentDisplayOff() {
 }
 
 /*******************************************************************************
-* Function Name: SEVENSegmentSetAllPinsAsOutput
+* Function Name: seven_segment_set_all_pins_as_output
 ********************************************************************************
 *
 * Summary:
@@ -284,7 +320,7 @@ void SEVENSegmentDisplayOff() {
 *  None
 *
 *******************************************************************************/
-void SEVENSegmentSetAllPinsAsOutput() {
+void seven_segment_set_all_pins_as_output() {
   pinMode(SEVEN_SEG_A, OUTPUT);
   pinMode(SEVEN_SEG_B, OUTPUT);
   pinMode(SEVEN_SEG_C, OUTPUT);
@@ -295,7 +331,7 @@ void SEVENSegmentSetAllPinsAsOutput() {
 }
 
 /*******************************************************************************
-* Function Name: SEVENSegmentSetAllPinsAsInput
+* Function Name: seven_segment_set_all_pins_as_input
 ********************************************************************************
 *
 * Summary:
@@ -308,7 +344,7 @@ void SEVENSegmentSetAllPinsAsOutput() {
 *  None
 *
 *******************************************************************************/
-void SEVENSegmentSetAllPinsAsInput() {
+void seven_segment_set_all_pins_as_input() {
   pinMode(SEVEN_SEG_A, INPUT);
   pinMode(SEVEN_SEG_B, INPUT);
   pinMode(SEVEN_SEG_C, INPUT);
@@ -319,13 +355,13 @@ void SEVENSegmentSetAllPinsAsInput() {
 }
 
 /*******************************************************************************
-* Function Name: displayTwoNumbers
+* Function Name: seven_segment_display_two_numbers
 ********************************************************************************
 *
 * Summary:
 *  This routine displays two numbers on a 7-segment display with a delay of <delayInMs> between updates
 *  example: 
-*    displayTwoNumbers(1, 9, 10)
+*    seven_segment_display_two_numbers(1, 9, 10)
 *    Displays 19 on the 7-segment display
 *     - display 1 for 10 milliseconds on digit 2
 *     - display 9 for 10 milliseconds on digit 1
@@ -338,19 +374,69 @@ void SEVENSegmentSetAllPinsAsInput() {
 *  None
 *
 *******************************************************************************/
-void displayTwoNumbers(int tens, int units, int delayInMs) {
+void seven_segment_display_two_numbers(int tens, int units, int delayInMs) {
   // Display tens
-  SEVENSegmentDisplayDigit(tens);
-  TurnDigitOn(2);
+  seven_segment_display_digit(tens);
+  turn_digit_on(2);
   delay(delayInMs);
-  TurnDigitOff(2);
+  turn_digit_off(2);
   
   // Display units
-  SEVENSegmentDisplayDigit(units);
-  TurnDigitOn(1);
+  seven_segment_display_digit(units);
+  turn_digit_on(1);
   delay(delayInMs);
-  TurnDigitOff(1);
+  turn_digit_off(1);
 }
+
+
+void perform_POST() {
+  seven_segment_display_digit(8);
+  turn_digit_on(1);
+  delay(1000);
+  turn_digit_off(1);
+  turn_digit_on(2);
+  delay(1000);
+  seven_segment_turn_display_off();
+  turn_digit_off(2);
+}
+
+/*******************************************************************************
+* Function Name: reset_reason_is_wakeup_related
+********************************************************************************
+*
+* Summary:
+*  This routine checks the wakeup reason. Returns true if wakeup related, false otherwise
+*
+* Parameters:
+*  None
+*
+* Return:
+*  boolean: true if the reset reason is wakeup related, false otherwise
+*
+*******************************************************************************/
+boolean reset_reason_is_wakeup_related(){
+  esp_sleep_wakeup_cause_t wakeup_reason;
+
+  wakeup_reason = esp_sleep_get_wakeup_cause();
+
+  switch(wakeup_reason)
+  {
+    case ESP_SLEEP_WAKEUP_EXT0:
+      // Fall through
+    case ESP_SLEEP_WAKEUP_EXT1:
+      // Fall through
+    case ESP_SLEEP_WAKEUP_TIMER:
+      // Fall through
+    case ESP_SLEEP_WAKEUP_TOUCHPAD:
+      // Fall through
+    case ESP_SLEEP_WAKEUP_ULP:
+      return true;
+    default:
+      return false;
+  }
+}
+
+
 
 /*******************************************************************************
 * Function Name: setup
@@ -370,15 +456,20 @@ void setup() {
   // Start the serial port
   Serial.begin(115200);
   
-  SEVENSegmentSetAllPinsAsOutput();
+  seven_segment_set_all_pins_as_output();
 
   pinMode(SEVEN_SEG_DIGIT_1, OUTPUT);
   pinMode(SEVEN_SEG_DIGIT_2, OUTPUT);
 
-  // Turn on all segments on by displaying the number 8
-  TurnDigitOn(1);
-  SEVENSegmentDisplayDigit(8);
+  if (reset_reason_is_wakeup_related() == false) {
+    Serial.println("Reset reason not wakeup related");
+    Serial.println("#### POST - Power On Self Test ####");
+    perform_POST();
+  }
 
+  turn_digit_on(1);
+  seven_segment_display_dash(); // Display a dash while connecting to WiFi
+  
   // Configure WiFi and connect to the network
   #if USE_STATIC_IP == TRUE
   if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
@@ -410,31 +501,12 @@ void setup() {
   Serial.println(WiFi.dnsIP());
   delay(1000);
   
-  TurnDigitOff(1);
-  TurnDigitOn(2);
-  delay(1000);
-  SEVENSegmentDisplayOff();
-  TurnDigitOff(2);
-  delay(1000);
-
-//  String responseData = httpGETRequest(URL);
-//  Serial.println(responseData);
-
-//  DynamicJsonDocument doc(4096);
-//  deserializeJson(doc, responseData);
-//  
-//  const float temperature = doc["temperature"];
-//  Serial.print("Temperature: ");
-//  Serial.println(temperature);
-}
-
-void loop() {
   // 1. Retrieve the current weather
-  String responseData = httpGETRequest(URL_TO);
-  Serial.println(responseData);
+  String response_data = http_get(URL);
+  Serial.println(response_data);
   
   // 2. Extract the temperature
-  deserializeJson(doc, responseData);
+  deserializeJson(doc, response_data);
   
   const float temperature = doc["temperature"];
   Serial.print("Temperature: ");
@@ -445,7 +517,25 @@ void loop() {
   int tens = (iTemperature / 10);
   int units = (iTemperature % 10);
   
-  while(1) {
-    displayTwoNumbers(tens, units, 1);
+  unsigned long millis_now = millis();
+  unsigned long millis_now_plus_30_seconds = millis_now + (30 * 1000);
+  
+  while(millis() < millis_now_plus_30_seconds) {
+    seven_segment_display_two_numbers(tens, units, 1);
   }
+  
+  while (digitalRead(33)) {
+    Serial.println("Motion detected ... ");
+    Serial.println("Will enter sleep mode once motion is no longer detected");
+    delay(500);
+  }
+
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_33, 1); // 1 = High, 0 = Low
+  
+  Serial.println("Going to sleep now");
+  esp_deep_sleep_start();
+}
+
+void loop() {
+  // Never enters the main loop
 }
