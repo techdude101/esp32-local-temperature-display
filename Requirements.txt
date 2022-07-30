@@ -27,7 +27,7 @@ LOOP
 3. Connect to WiFi (credentials hardcoded in firmware)
 	- Error connecting to WiFi -> Display F1 short for WiFi on the display
 4. Retrieve current temperature (nearest weather station or data source stored in firmware)
-	- Error retrieving temperature -> Display °C to indicate an error retrieving or parsing temperature (segments a, b, f & g) for ° symbol
+	- Error retrieving temperature -> Display ° to indicate an error retrieving or parsing temperature (segments a, b, f & g) for ° symbol
 5. Display the 2-digit temperature on the 7-segment display for 30 seconds
 LOOP
 6. Enter low power mode (turn off WiFi etc...)
