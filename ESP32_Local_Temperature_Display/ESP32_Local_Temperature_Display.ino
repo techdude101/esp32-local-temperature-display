@@ -254,6 +254,9 @@ void setup() {
     temperature = g_doc["temperature"];
     Serial.print("Temperature: ");
     Serial.println(temperature);
+    if (temperature == 0.00f) {
+      throw 400;
+    }
   } catch (...) {
     handle_temperature_error();
   }
